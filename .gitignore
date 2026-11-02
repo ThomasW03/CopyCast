@@ -1,0 +1,50 @@
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+
+# Dependencies
+node_modules/
+.venv/
+vendor/
+
+# Build output
+build/
+dist/
+out/
+target/
+cmake-build-*/
+*.AppImage
+*.exe
+*.msi
+*.dmg
+*.deb
+*.apk
+*.aab
+
+# Android / Gradle
+.gradle/
+local.properties
+*.iml
+
+# IDEs and editors
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Media and runtime data (never committed)
+media/
+demo-library/
+*.sqlite
+*.sqlite3
+*.db
+cache/
+
+# Logs
+*.log
+logs/
