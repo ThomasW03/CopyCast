@@ -51,8 +51,6 @@ AI tools are allowed on this project and are declared here. Every generated chan
 
 Metadata is provided by public APIs, used under their terms. The required attributions will be listed here (for example TheMovieDB and MusicBrainz).
 
-This product uses the TMDB API but is not endorsed or certified by TMDB.
-
 ## License
 
 [MIT](LICENSE)
