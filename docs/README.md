@@ -11,4 +11,4 @@ Documentation lives in this folder and is versioned with the code. It is written
 
 ## Architecture decision records
 
-- 
+-

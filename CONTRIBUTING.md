@@ -30,7 +30,7 @@ Example: `feat/smb-source`.
 
 We follow [Conventional Commits](https://www.conventionalcommits.org/):
 
-```
+```text
 <type>(<optional scope>): <short summary>
 ```
 
@@ -38,7 +38,7 @@ Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`
 
 Examples:
 
-```
+```text
 feat(library): add incremental scan
 fix(remote): reject unpaired devices
 docs(extensions): add manifest reference
