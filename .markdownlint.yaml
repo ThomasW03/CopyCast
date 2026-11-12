@@ -1,0 +1,7 @@
+# Prose is not hard-wrapped, so line length is not enforced.
+MD013: false
+# Keep a Changelog repeats headings such as "Added" under each version.
+MD024:
+  siblings_only: true
+# Pull request templates start at level 2 on purpose.
+MD041: false
