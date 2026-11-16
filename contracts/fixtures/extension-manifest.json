@@ -1,0 +1,10 @@
+{
+  "id": "org.copycast.hello",
+  "name": "Hello",
+  "version": "0.1.0",
+  "author": "CopyCast team",
+  "description": "Sample extension that shows a greeting on the home screen.",
+  "type": "widget",
+  "permissions": ["storage"],
+  "entry": "hello.wasm"
+}

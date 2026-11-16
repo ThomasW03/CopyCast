@@ -1,0 +1,285 @@
+openapi: 3.0.3
+info:
+  title: CopyCast control API
+  version: 0.1.0
+  description: |
+    HTTP API exposed by the CopyCast daemon on the local network.
+    Real-time state is pushed over the WebSocket described in `events.schema.json`.
+    Every route requires a paired device (bearer token) except `health` and `pairing`.
+servers:
+  - url: http://localhost:7878/api/v1
+
+security:
+  - bearerAuth: []
+
+paths:
+  /health:
+    get:
+      summary: Daemon liveness and version
+      operationId: getHealth
+      security: []
+      responses:
+        "200":
+          description: The daemon is running.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Health" }
+
+  /ws:
+    get:
+      summary: Upgrade to a WebSocket that streams events
+      operationId: connectEvents
+      description: Messages are JSON objects described in `events.schema.json`.
+      responses:
+        "101":
+          description: Switching protocols.
+
+  /pairing/requests:
+    post:
+      summary: Ask to pair a new device
+      description: |
+        The daemon shows a code on the living-room screen.
+        The device then confirms the request with that code.
+      operationId: createPairingRequest
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/PairingRequestInput" }
+      responses:
+        "201":
+          description: Pairing request created.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/PairingRequest" }
+
+  /pairing/requests/{requestId}/confirm:
+    post:
+      summary: Confirm a pairing request with the on-screen code
+      operationId: confirmPairingRequest
+      security: []
+      parameters:
+        - { $ref: "#/components/parameters/RequestId" }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/PairingConfirmation" }
+      responses:
+        "200":
+          description: The device is paired.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/PairingToken" }
+        "403":
+          $ref: "#/components/responses/Error"
+
+  /library/items:
+    get:
+      summary: List media items
+      operationId: listLibraryItems
+      parameters:
+        - name: kind
+          in: query
+          required: false
+          schema: { $ref: "#/components/schemas/MediaKind" }
+      responses:
+        "200":
+          description: Media items, optionally filtered by kind.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/MediaItem" }
+
+  /library/items/{itemId}:
+    get:
+      summary: Get one media item
+      operationId: getLibraryItem
+      parameters:
+        - { $ref: "#/components/parameters/ItemId" }
+      responses:
+        "200":
+          description: The media item.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/MediaItem" }
+        "404":
+          $ref: "#/components/responses/Error"
+
+  /playback:
+    get:
+      summary: Current playback state
+      operationId: getPlayback
+      responses:
+        "200":
+          description: The playback state.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/PlaybackState" }
+
+  /playback/commands:
+    post:
+      summary: Send a command to the player
+      operationId: sendPlaybackCommand
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/PlaybackCommand" }
+      responses:
+        "202":
+          description: The command was accepted.
+        "422":
+          $ref: "#/components/responses/Error"
+
+  /queue:
+    get:
+      summary: Items waiting to be played
+      operationId: getQueue
+      responses:
+        "200":
+          description: The queue, in playback order.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/MediaItem" }
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+
+  parameters:
+    ItemId:
+      name: itemId
+      in: path
+      required: true
+      schema: { type: integer, format: int64 }
+    RequestId:
+      name: requestId
+      in: path
+      required: true
+      schema: { type: string }
+
+  responses:
+    Error:
+      description: The request failed.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+
+  schemas:
+    Health:
+      type: object
+      required: [version, uptime_seconds]
+      properties:
+        version: { type: string, example: 0.1.0 }
+        uptime_seconds: { type: integer, minimum: 0 }
+
+    Error:
+      type: object
+      required: [code, message]
+      properties:
+        code: { type: string, example: not_found }
+        message: { type: string }
+
+    MediaKind:
+      type: string
+      enum: [movie, episode, track, podcast_episode]
+
+    MediaItem:
+      type: object
+      required: [id, kind, title, duration_ms]
+      properties:
+        id: { type: integer, format: int64 }
+        kind: { $ref: "#/components/schemas/MediaKind" }
+        title: { type: string }
+        year: { type: integer, nullable: true }
+        duration_ms: { type: integer, minimum: 0 }
+        poster_url: { type: string, nullable: true }
+
+    PlaybackStatus:
+      type: string
+      enum: [stopped, playing, paused]
+
+    PlaybackState:
+      type: object
+      required: [status, volume]
+      properties:
+        status: { $ref: "#/components/schemas/PlaybackStatus" }
+        item_id: { type: integer, format: int64, nullable: true }
+        position_ms: { type: integer, minimum: 0 }
+        volume: { type: integer, minimum: 0, maximum: 100 }
+
+    PlaybackCommand:
+      description: A command, selected by its `action` field.
+      oneOf:
+        - { $ref: "#/components/schemas/PlayCommand" }
+        - { $ref: "#/components/schemas/PauseCommand" }
+        - { $ref: "#/components/schemas/ResumeCommand" }
+        - { $ref: "#/components/schemas/SeekCommand" }
+        - { $ref: "#/components/schemas/SetVolumeCommand" }
+      discriminator:
+        propertyName: action
+
+    PlayCommand:
+      type: object
+      required: [action, item_id]
+      properties:
+        action: { type: string, enum: [play] }
+        item_id: { type: integer, format: int64 }
+
+    PauseCommand:
+      type: object
+      required: [action]
+      properties:
+        action: { type: string, enum: [pause] }
+
+    ResumeCommand:
+      type: object
+      required: [action]
+      properties:
+        action: { type: string, enum: [resume] }
+
+    SeekCommand:
+      type: object
+      required: [action, position_ms]
+      properties:
+        action: { type: string, enum: [seek] }
+        position_ms: { type: integer, minimum: 0 }
+
+    SetVolumeCommand:
+      type: object
+      required: [action, level]
+      properties:
+        action: { type: string, enum: [set_volume] }
+        level: { type: integer, minimum: 0, maximum: 100 }
+
+    PairingRequestInput:
+      type: object
+      required: [device_name]
+      properties:
+        device_name: { type: string, example: Pixel 8 }
+
+    PairingRequest:
+      type: object
+      required: [request_id, expires_in_seconds]
+      properties:
+        request_id: { type: string }
+        expires_in_seconds: { type: integer }
+
+    PairingConfirmation:
+      type: object
+      required: [code]
+      properties:
+        code: { type: string, example: "482913" }
+
+    PairingToken:
+      type: object
+      required: [token]
+      properties:
+        token: { type: string }

@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://copycast.local/contracts/extension-manifest.schema.json",
+  "title": "CopyCast extension manifest",
+  "description": "The manifest.json at the root of an extension package.",
+  "type": "object",
+  "required": ["id", "name", "version", "author", "description", "type", "permissions", "entry"],
+  "properties": {
+    "id": {
+      "description": "Unique identifier in reverse-domain style.",
+      "type": "string",
+      "pattern": "^[a-z0-9]+(\\.[a-z0-9-]+)+$"
+    },
+    "name": { "type": "string", "minLength": 1 },
+    "version": {
+      "description": "Semantic version.",
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+(-[0-9A-Za-z.-]+)?$"
+    },
+    "author": { "type": "string", "minLength": 1 },
+    "description": { "type": "string" },
+    "type": {
+      "description": "What the extension adds to the media center.",
+      "enum": ["source", "metadata", "widget"]
+    },
+    "permissions": {
+      "description": "Capabilities the user must accept at install time. Anything not listed is denied.",
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "enum": ["network", "library.read", "playback.control", "storage"] }
+    },
+    "entry": {
+      "description": "Path of the WebAssembly module inside the package.",
+      "type": "string",
+      "pattern": "\\.wasm$"
+    }
+  },
+  "additionalProperties": false
+}
