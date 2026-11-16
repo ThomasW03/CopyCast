@@ -55,14 +55,32 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  # Add the test and build jobs of core, app, mobile and extensions here as the code lands,
+  # Format, lint, tests and release build of the Rust daemon.
+  core:
+    name: Core
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: core
+    steps:
+      - uses: actions/checkout@v7
+      - run: rustup show active-toolchain || rustup toolchain install
+      - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
+        with:
+          workspaces: core
+      - run: cargo fmt --all --check
+      - run: cargo clippy --all-targets --locked -- -D warnings
+      - run: cargo test --locked
+      - run: cargo build --release --locked
+
+  # Add the jobs of app, mobile and extensions here as their code lands,
   # and list them in `needs` below.
 
   # Single required status check for branch protection: it stays valid as jobs are added.
   ci-ok:
     name: CI OK
     if: always()
-    needs: [secrets, lint, pr-title]
+    needs: [secrets, lint, pr-title, core]
     runs-on: ubuntu-latest
     steps:
       - name: Fail if a required job failed or was cancelled
