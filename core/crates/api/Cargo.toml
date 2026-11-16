@@ -1,0 +1,25 @@
+[package]
+name = "copycast-api"
+description = "HTTP and WebSocket control API of the CopyCast daemon"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+axum.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+sqlx.workspace = true
+tokio = { workspace = true, features = ["macros", "rt", "sync"] }
+tracing.workspace = true
+
+[dev-dependencies]
+futures-util.workspace = true
+http-body-util.workspace = true
+tokio = { workspace = true, features = ["net", "rt-multi-thread", "time"] }
+tokio-tungstenite.workspace = true
+tower.workspace = true
