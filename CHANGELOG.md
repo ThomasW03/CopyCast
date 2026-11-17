@@ -9,3 +9,4 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Added
 
 - Initial repository setup: license, contribution guidelines, issue and pull request templates, architecture decision records.
+- Demo library script that downloads legal Blender open movies under deliberately badly formatted names, with their licenses.
