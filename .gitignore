@@ -8,6 +8,10 @@ node_modules/
 .venv/
 vendor/
 
+# Python caches
+__pycache__/
+*.pyc
+
 # Build output
 build/
 dist/
