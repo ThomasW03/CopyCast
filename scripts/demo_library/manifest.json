@@ -1,0 +1,78 @@
+{
+  "media": [
+    {
+      "id": "elephants-dream",
+      "kind": "movie",
+      "title": "Elephants Dream",
+      "year": 2006,
+      "filename": "Elephants.Dream.2006.480p.WEB-DL.H264-DEMO.mov",
+      "difficulty": "Dots as separators and release tags (resolution, source, codec, group) around the year",
+      "url": "https://download.blender.org/ED/elephantsdream-480-h264-st-aac.mov",
+      "size": 103636531,
+      "license": "CC BY 2.5",
+      "license_url": "https://creativecommons.org/licenses/by/2.5/",
+      "attribution": "Blender Foundation",
+      "source_page": "https://studio.blender.org/projects/elephants-dream/"
+    },
+    {
+      "id": "big-buck-bunny",
+      "kind": "movie",
+      "title": "Big Buck Bunny",
+      "year": 2008,
+      "filename": "big_buck_bunny_360p_final(2).m4v",
+      "difficulty": "Underscores, no year, a resolution and a copy suffix such as (2)",
+      "url": "https://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_640x360.m4v.zip",
+      "size": 121284117,
+      "archive_member": "BigBuckBunny_640x360.m4v",
+      "license": "CC BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "attribution": "(c) copyright Blender Foundation | www.bigbuckbunny.org",
+      "source_page": "https://peach.blender.org/about/"
+    },
+    {
+      "id": "sintel",
+      "kind": "movie",
+      "title": "Sintel",
+      "year": 2010,
+      "filename": "SINTEL - 2010 - 720p [BluRay] x264.mkv",
+      "difficulty": "Upper case, dashes and brackets, spaces mixed with release tags",
+      "url": "https://download.blender.org/durian/movies/Sintel.2010.720p.mkv.zip",
+      "size": 681285470,
+      "archive_member": "Sintel.2010.720p.mkv",
+      "license": "CC BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "attribution": "(c) copyright Blender Foundation | www.sintel.org",
+      "source_page": "https://studio.blender.org/projects/sintel/"
+    },
+    {
+      "id": "tears-of-steel",
+      "kind": "movie",
+      "title": "Tears of Steel",
+      "year": 2012,
+      "filename": "ToS_2012_720p.mov",
+      "difficulty": "Abbreviated title: the name alone cannot be matched, so it needs manual correction",
+      "needs_manual_correction": true,
+      "url": "https://download.blender.org/demo/movies/ToS/tears_of_steel_720p.mov",
+      "size": 372178639,
+      "license": "CC BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "attribution": "(CC) Blender Foundation | mango.blender.org",
+      "source_page": "https://studio.blender.org/projects/tears-of-steel/"
+    },
+    {
+      "id": "caminandes-gran-dillama",
+      "kind": "movie",
+      "title": "Caminandes: Gran Dillama",
+      "year": 2013,
+      "filename": "caminandes_2_gran_dillama.mp4",
+      "difficulty": "A number in the title that looks like a sequel or episode number, and no year",
+      "url": "https://download.blender.org/demo/movies/caminandes_gran_dillama.mp4.zip",
+      "size": 125632282,
+      "archive_member": "caminandes_gran_dillama.mp4",
+      "license": "CC BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "attribution": "Pablo Vazquez, Blender Foundation",
+      "source_page": "https://studio.blender.org/projects/caminandes-2/"
+    }
+  ]
+}
