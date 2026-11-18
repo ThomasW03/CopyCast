@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://copycast.local/contracts/events.schema.json",
+  "title": "CopyCast WebSocket event",
+  "description": "A message pushed by the daemon on /api/v1/ws. The `type` field selects the shape.",
+  "oneOf": [
+    { "$ref": "#/$defs/hello" },
+    { "$ref": "#/$defs/playbackState" },
+    { "$ref": "#/$defs/libraryUpdated" },
+    { "$ref": "#/$defs/pairingRequested" }
+  ],
+  "$defs": {
+    "hello": {
+      "description": "Sent once, right after the connection opens.",
+      "type": "object",
+      "required": ["type", "version"],
+      "properties": {
+        "type": { "const": "hello" },
+        "version": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "playbackState": {
+      "description": "Sent whenever the playback state changes.",
+      "type": "object",
+      "required": ["type", "status", "volume", "position_ms"],
+      "properties": {
+        "type": { "const": "playback.state" },
+        "status": { "enum": ["stopped", "playing", "paused"] },
+        "item_id": { "type": ["integer", "null"] },
+        "position_ms": { "type": "integer", "minimum": 0 },
+        "volume": { "type": "integer", "minimum": 0, "maximum": 100 }
+      },
+      "additionalProperties": false
+    },
+    "libraryUpdated": {
+      "description": "Sent when a scan added, changed or removed media.",
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": { "const": "library.updated" }
+      },
+      "additionalProperties": false
+    },
+    "pairingRequested": {
+      "description": "Sent to the living-room screen so it can display the pairing code.",
+      "type": "object",
+      "required": ["type", "request_id", "device_name", "code"],
+      "properties": {
+        "type": { "const": "pairing.requested" },
+        "request_id": { "type": "string" },
+        "device_name": { "type": "string" },
+        "code": { "type": "string" }
+      },
+      "additionalProperties": false
+    }
+  }
+}

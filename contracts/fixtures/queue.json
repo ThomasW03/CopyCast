@@ -1,0 +1,4 @@
+[
+  { "id": 2, "kind": "movie", "title": "Sintel", "year": 2010, "duration_ms": 888000, "poster_url": null },
+  { "id": 3, "kind": "movie", "title": "Tears of Steel", "year": 2012, "duration_ms": 734000, "poster_url": null }
+]
